@@ -2,7 +2,6 @@ package org.chrisle.netbeans.plugins.quickfileandfolder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import org.openide.loaders.DataObject;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -37,19 +36,19 @@ public final class QuickFileAndFolderAction implements ActionListener {
     public void actionPerformed(ActionEvent ev) {
         FileObject primaryFile = null;
 
-        try {
-            primaryFile = _context.getPrimaryFile();
-            
-            File currentDir = new File(primaryFile.getPath());
-            File newDir = new File(currentDir, "New Folder");
-            
-            if (newDir.exists()) {
-                newDir = new File(currentDir, "New Folder" + ++_folderCounter);
-            }
-
-            newDir.mkdirs();
-        } catch (Exception e) {
-            
-        }
+//        try {
+//            primaryFile = _context.getPrimaryFile();
+//            
+//            File currentDir = new File(primaryFile.getPath());
+//            File newDir = new File(currentDir, "New Folder");
+//            
+//            if (newDir.exists()) {
+//                newDir = new File(currentDir, "New Folder" + ++_folderCounter);
+//            }
+//
+//            newDir.mkdirs();
+//        } catch (Exception e) {
+//            
+//        }
     }
 }
