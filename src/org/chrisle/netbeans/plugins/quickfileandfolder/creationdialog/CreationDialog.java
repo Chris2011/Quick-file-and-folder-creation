@@ -5,18 +5,41 @@
  */
 package org.chrisle.netbeans.plugins.quickfileandfolder.creationdialog;
 
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import org.chrisle.netbeans.plugins.quickfileandfolder.QuickFolderAction;
+
 /**
  *
  * @author chrl
  */
 public class CreationDialog extends javax.swing.JDialog {
-
     /**
      * Creates new form CreationDialog
      */
-    public CreationDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public CreationDialog() {
+//        super(parent, modal);
+               
         initComponents();
+        
+        this._errorLabel.setVisible(false);
+        
+        _newCreationTextField.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (QuickFolderAction.dirExists(_newCreationTextField.getText())) {
+                    _errorLabel.setVisible(true);
+                    _createButton.setEnabled(false);
+                } else {
+                    _errorLabel.setVisible(false);
+                    _createButton.setEnabled(true);
+                }
+            }
+        });
+    }
+    
+    public void setLabel(String label) {
+        this._newCreationLabel.setText(label);
     }
 
     /**
@@ -32,6 +55,7 @@ public class CreationDialog extends javax.swing.JDialog {
         _newCreationLabel = new javax.swing.JLabel();
         _createButton = new javax.swing.JButton();
         _cancelButton = new javax.swing.JButton();
+        _errorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -48,6 +72,9 @@ public class CreationDialog extends javax.swing.JDialog {
 
         org.openide.awt.Mnemonics.setLocalizedText(_cancelButton, org.openide.util.NbBundle.getMessage(CreationDialog.class, "CreationDialog._cancelButton.text")); // NOI18N
 
+        _errorLabel.setForeground(new java.awt.Color(255, 0, 51));
+        org.openide.awt.Mnemonics.setLocalizedText(_errorLabel, org.openide.util.NbBundle.getMessage(CreationDialog.class, "CreationDialog._errorLabel.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -55,15 +82,20 @@ public class CreationDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(_newCreationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(_newCreationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addComponent(_createButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(_cancelButton)))
+                        .addComponent(_cancelButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(_errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(_newCreationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(_newCreationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -73,11 +105,13 @@ public class CreationDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(_newCreationTextField)
                     .addComponent(_newCreationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(_errorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_createButton)
                     .addComponent(_cancelButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -117,7 +151,7 @@ public class CreationDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CreationDialog dialog = new CreationDialog(new javax.swing.JFrame(), true);
+                CreationDialog dialog = new CreationDialog();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -132,7 +166,12 @@ public class CreationDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton _cancelButton;
     private javax.swing.JButton _createButton;
+    private javax.swing.JLabel _errorLabel;
     private javax.swing.JLabel _newCreationLabel;
     private javax.swing.JTextField _newCreationTextField;
     // End of variables declaration//GEN-END:variables
+
+    public void setErrorLabelVisible(boolean setVisible) {
+        this._errorLabel.setVisible(setVisible);
+    }
 }
