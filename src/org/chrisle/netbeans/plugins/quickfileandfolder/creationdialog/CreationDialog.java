@@ -1,19 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.chrisle.netbeans.plugins.quickfileandfolder.creationdialog;
 
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.chrisle.netbeans.plugins.quickfileandfolder.QuickFolderAction;
+import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataObject;
 
 /**
  *
  * @author chrl
  */
 public class CreationDialog extends javax.swing.JDialog {
+    private DataObject _context;    
+    
     /**
      * Creates new form CreationDialog
      */
@@ -24,10 +26,12 @@ public class CreationDialog extends javax.swing.JDialog {
         
         this._errorLabel.setVisible(false);
         
-        _newCreationTextField.addActionListener(new AbstractAction() {
+        _newCreationTextField.addKeyListener(new KeyListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (QuickFolderAction.dirExists(_newCreationTextField.getText())) {
+            public void keyPressed(KeyEvent e) {
+                System.out.println(_newCreationTextField.getText());
+                
+                if (dirExists(_newCreationTextField.getText())) {
                     _errorLabel.setVisible(true);
                     _createButton.setEnabled(false);
                 } else {
@@ -35,7 +39,27 @@ public class CreationDialog extends javax.swing.JDialog {
                     _createButton.setEnabled(true);
                 }
             }
+            
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                
+            }
         });
+    }
+    
+    public boolean dirExists(String dirName) {
+        FileObject primaryFile;
+        
+        primaryFile = _context.getPrimaryFile();
+        
+        Path path = Paths.get(primaryFile.getPath() + "/" + dirName);
+        
+        return Files.exists(path);
     }
     
     public void setLabel(String label) {
@@ -173,5 +197,9 @@ public class CreationDialog extends javax.swing.JDialog {
 
     public void setErrorLabelVisible(boolean setVisible) {
         this._errorLabel.setVisible(setVisible);
+    }
+
+    public void setContext(DataObject context) {
+        this._context = context;
     }
 }

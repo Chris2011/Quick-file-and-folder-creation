@@ -36,6 +36,8 @@ public final class QuickFolderAction implements ActionListener {
 
     public QuickFolderAction(DataObject context) {
         _context = context;
+        
+        _creationDialog.setContext(_context);
     }
 
     @Override
@@ -65,7 +67,7 @@ public final class QuickFolderAction implements ActionListener {
         
         primaryFile = _context.getPrimaryFile();
         
-        Path path = Paths.get(primaryFile.getPath());
+        Path path = Paths.get(primaryFile.getPath() + "/" + dirName);
         
         return Files.exists(path);
     }
