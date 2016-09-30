@@ -6,7 +6,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.swing.JDialog;
 import org.chrisle.netbeans.plugins.quickfileandfolder.creationdialog.CreationDialog;
 import org.openide.loaders.DataObject;
 import org.openide.awt.ActionID;
